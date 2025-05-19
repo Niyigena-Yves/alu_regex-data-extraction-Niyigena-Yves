@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Form Field Validator</title>
+</head>
+<body>
+    <div class="container">
+        <h2>Form Field Validator</h2>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="openTab(event, 'email')">Email</button>
+            <button class="tab" onclick="openTab(event, 'url')">URL</button>
+            <button class="tab" onclick="openTab(event, 'phone')">Phone</button>
+            <button class="tab" onclick="openTab(event, 'html')">HTML Tag</button>
+        </div>
+        
+        <!-- Email Tab -->
+        <div id="email" class="tab-content active">
+            <div class="form-group">
+                <label for="email-input">Email Address:</label>
+                <input type="text" id="email-input" placeholder="Enter an email address">
+            </div>
+            <button onclick="validateInput('email')">Validate</button>
+            <div id="email-result" class="result"></div>
+            <div class="examples">
+                <p><strong>Valid Examples:</strong></p>
+                <p>user@example.com</p>
+                <p>firstname.lastname@company.co.uk</p>
+            </div>
+        </div>
+        
+        <!-- URL Tab -->
+        <div id="url" class="tab-content">
+            <div class="form-group">
+                <label for="url-input">URL:</label>
+                <input type="text" id="url-input" placeholder="Enter a URL">
+            </div>
+            <button onclick="validateInput('url')">Validate</button>
+            <div id="url-result" class="result"></div>
+            <div class="examples">
+                <p><strong>Valid Examples:</strong></p>
+                <p>https://www.example.com</p>
+                <p>https://subdomain.example.org/page</p>
+            </div>
+        </div>
+        
+        <!-- Phone Tab -->
+        <div id="phone" class="tab-content">
+            <div class="form-group">
+                <label for="phone-input">Phone Number:</label>
+                <input type="text" id="phone-input" placeholder="Enter a phone number">
+            </div>
+            <button onclick="validateInput('phone')">Validate</button>
+            <div id="phone-result" class="result"></div>
+            <div class="examples">
+                <p><strong>Valid Examples:</strong></p>
+                <p>(123) 456-7890</p>
+                <p>123-456-7890</p>
+                <p>123.456.7890</p>
+            </div>
+        </div>
+                
+        <!-- HTML Tag Tab -->
+        <div id="html" class="tab-content">
+            <div class="form-group">
+                <label for="html-input">HTML Tag:</label>
+                <input type="text" id="html-input" placeholder="Enter an HTML tag">
+            </div>
+            <button onclick="validateInput('html')">Validate</button>
+            <div id="html-result" class="result"></div>
+            <div class="examples">
+                <p><strong>Valid Examples:</strong></p>
+                <p>&lt;p&gt;</p>
+                <p>&lt;div class="example"&gt;</p>
+                <p>&lt;img src="image.jpg" alt="description"&gt;</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <script>
+        // Regular expressions for validation
+        const validators = {
+            email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+            url: /^(https?:\/\/)(www\.)?([a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+)(\/[a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/,
+            phone: /^(\(\d{3}\)\s?|\d{3}[-.])\d{3}[-.]?\d{4}$/,
+            html: /<([a-z][a-z0-9]*)\b[^>]*>|<\/([a-z][a-z0-9]*)\b[^>]*>/i,
+        };
+
+        // Open tab function
+        function openTab(evt, tabName) {
+            const tabContents = document.getElementsByClassName('tab-content');
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove('active');
+            }
+
+            const tabs = document.getElementsByClassName('tab');
+            for (let i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove('active');
+            }
+
+            document.getElementById(tabName).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
+        // Validate input function
+        function validateInput(type) {
+            const input = document.getElementById(`${type}-input`).value;
+            const resultElement = document.getElementById(`${type}-result`);
+            const isValid = validators[type].test(input);
+            
+            if (isValid) {
+                resultElement.className = 'result valid';
+                resultElement.textContent = '✓ Valid input!';
+            } else {
+                resultElement.className = 'result invalid';
+                resultElement.textContent = '✗ Invalid input!';
+            }
+        }
+    </script>
+</body>
+</html>
